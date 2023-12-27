@@ -1,8 +1,8 @@
 import React from "react";
-import { useUser } from "./Login"; // Importe o hook useUser
+import { useUser } from "./Login";
 
 const SwowRequest = () => {
-  const userData = useUser(); // Use o hook para obter os dados do usuário
+  const userData = useUser();
 
   return (
     <div>

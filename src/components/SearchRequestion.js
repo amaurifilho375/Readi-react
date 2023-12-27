@@ -1,14 +1,14 @@
 import React, { useState, useEffect } from "react";
+//import "./styles.css";
+import "./SearchCertificate.css";
 
 const SearchCertificate = () => {
   const [certificateData, setCertificateData] = useState(null);
   const [useData, setUseData] = useState(null);
-  const userId = 13; // Altere o ID do usuário conforme necessário
-
   useEffect(() => {
     const fetchCertificate = async () => {
       const storedUserData = JSON.parse(localStorage.getItem("userData"));
-      const userId = parseInt(storedUserData.id);
+      const userId = parseInt(storedUserData?.id);
       const storedUserToken = localStorage.getItem("userToken");
 
       try {
@@ -28,8 +28,8 @@ const SearchCertificate = () => {
         }
 
         const data = await response.json();
-        setUseData(data);
-        setCertificateData(data);
+        setCertificateData(data.user.requests);
+        setUseData(data.user.name);
         console.log("front:", data.user.name);
       } catch (error) {
         console.error("Error fetching certificate:", error);
@@ -37,16 +37,18 @@ const SearchCertificate = () => {
     };
 
     fetchCertificate();
-  }, [userId]);
-
+  }, []);
   return (
-    <div>
-      <h2>Certificate Data:</h2>
+    <div className="container">
+      <h2 className="title">Solicitações da(o) {useData}</h2>
       {certificateData ? (
         <ul>
-          <li>ID: {useData.user.id}</li>
-          <li>Name: {useData.user.name}</li>
-          {/* Adicione outros campos conforme a estrutura dos dados retornados */}
+          {certificateData.map((request) => (
+            <li key={request.id}>
+              <p>ID: {request.id}</p>
+              <p>Name: {request.nome_completo}</p>
+            </li>
+          ))}
         </ul>
       ) : (
         <p>Loading...</p>
